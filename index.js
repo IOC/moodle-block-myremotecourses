@@ -16,7 +16,6 @@ var getremotecourses = function(myurl){
             }
         };
         var handleFailure = function () {
-                console.log('timeout');
                 var node = '<div class="box center">'+M.util.get_string('errormyremotehost','block_myremotecourses')+'</div>';
                 Y.one('#rcourse-list').setContent(node);
         };
