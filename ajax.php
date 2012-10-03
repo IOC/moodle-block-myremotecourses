@@ -110,7 +110,7 @@ function print_ioc_overview($courses) {
 if (!empty($USER->id)) {
     $callback = optional_param('callback', '', PARAM_TEXT);
     
-    $courses = enrol_get_my_courses('modinfo');
+    $courses = enrol_get_my_courses('modinfo, sectioncache');
     foreach ($courses as $c) {
         if (isset($USER->lastcourseaccess[$c->id])) {
             $courses[$c->id]->lastaccess = $USER->lastcourseaccess[$c->id];
