@@ -107,9 +107,8 @@ function print_ioc_overview($courses) {
     return $outhtml;
 }
 
+$callback = optional_param('callback', '', PARAM_TEXT);
 if (!empty($USER->id)) {
-    $callback = optional_param('callback', '', PARAM_TEXT);
-    
     $courses = enrol_get_my_courses('modinfo, sectioncache');
     foreach ($courses as $c) {
         if (isset($USER->lastcourseaccess[$c->id])) {
@@ -118,13 +117,17 @@ if (!empty($USER->id)) {
             $courses[$c->id]->lastaccess = 0;
         }
     }
-    if (!empty($callback)){
+    if (!empty($callback)) {
         echo $callback.'(';
     }
     
     echo json_encode(print_ioc_overview($courses));
     
-    if (!empty($callback)){
+    if (!empty($callback)) {
         echo ');';
+    }
+} else {
+    if (!empty($callback)) {
+        echo $callback.'()';
     }
 }

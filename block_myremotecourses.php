@@ -75,12 +75,14 @@ class block_myremotecourses extends block_base {
             if (!empty($CFG->block_myremotecourses_moodlepath)){
                 $this->pathtoajax = $CFG->block_myremotecourses_moodlepath;
             }
+            $directurl = $this->idprovider->wwwroot.$this->pathtoajax;
             if (is_mnet_remote_user($USER)){
-                $url = $this->idprovider->wwwroot.$this->pathtoajax;
+                $remoteurl = $directurl;
             }else{
-                $url = $CFG->wwwroot.'/auth/mnet/jump.php?hostid='.$this->idprovider->id.'&wantsurl='.$this->pathtoajax;
+                $remoteurl = $CFG->wwwroot.'/auth/mnet/jump.php?hostid='.$this->idprovider->id.'&wantsurl='.$this->pathtoajax;
             }
-            $PAGE->requires->js_init_code('getremotecourses("'.$url.'");', true);
+
+            $PAGE->requires->js_init_code('getremotecourses("'.$directurl.'", "'.$remoteurl.'");', true);
         }
 
         $this->content = new stdClass();

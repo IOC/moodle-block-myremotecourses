@@ -1,4 +1,4 @@
-var getremotecourses = function(myurl){
+var getremotecourses = function(directurl, remoteurl){
     YUI(M.yui.loader).use('node', 'jsonp', 'jsonp-url', function(Y) {
         Y.one('img.roverview-loading').show(true);
         var handleSuccess = function (response) {
@@ -19,11 +19,23 @@ var getremotecourses = function(myurl){
                 var node = '<div class="box center">'+M.util.get_string('errormyremotehost','block_myremotecourses')+'</div>';
                 Y.one('#rcourse-list').setContent(node);
         };
-        Y.jsonp(myurl+'?callback={callback}', {
+        var handledirectSuccess = function (response) {
+            if (response) {
+                handleSuccess(response);
+            } else {
+                Y.jsonp(remoteurl+'?callback={callback}', {
+                    on: {
+                        success: handleSuccess,
+                        failure: handleFailure
+                    }
+                });
+            }
+        };
+        Y.jsonp(directurl+'?callback={callback}', {
             on: {
-                success: handleSuccess,
+                success: handledirectSuccess,
                 failure: handleFailure
             }
         });
     });
-}
+};
