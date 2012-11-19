@@ -121,7 +121,11 @@ if (!empty($USER->id)) {
         echo $callback.'(';
     }
     
-    echo json_encode(print_ioc_overview($courses) . '<!-- end of remote courses -->');
+    $content = print_ioc_overview($courses);
+    if (empty($content)) {
+        $content = '<!--KO-->';
+    }
+    echo json_encode($content);
     
     if (!empty($callback)) {
         echo ');';
