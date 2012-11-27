@@ -108,6 +108,10 @@ function print_ioc_overview($courses) {
 }
 
 $callback = optional_param('callback', '', PARAM_TEXT);
+$content = '';
+$sitetitle = '';
+$siteurl = '';
+
 if (!empty($USER->id)) {
     $courses = enrol_get_my_courses('modinfo, sectioncache');
     foreach ($courses as $c) {
@@ -117,21 +121,22 @@ if (!empty($USER->id)) {
             $courses[$c->id]->lastaccess = 0;
         }
     }
-    if (!empty($callback)) {
-        echo $callback.'(';
-    }
-    
     $content = print_ioc_overview($courses);
     if (empty($content)) {
         $content = '<!--KO-->';
     }
-    echo json_encode($content);
-    
-    if (!empty($callback)) {
-        echo ');';
-    }
-} else {
-    if (!empty($callback)) {
-        echo $callback.'()';
-    }
+    $sitetitle = $SITE->fullname;
+    $siteurl = $CFG->wwwroot;
+}
+
+if (!empty($callback)) {
+    echo $callback.'(';
+}
+echo json_encode(array(
+    'html' => $content,
+    'title' => $sitetitle,
+    'url' => $siteurl
+));
+if (!empty($callback)) {
+    echo ');';
 }

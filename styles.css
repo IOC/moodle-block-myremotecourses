@@ -9,3 +9,7 @@
 .roverview-link img{
  margin-right: 0;
 }
+
+.remote-hidden {
+    display: none;
+}

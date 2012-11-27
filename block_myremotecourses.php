@@ -30,28 +30,15 @@ require_once($CFG->dirroot . '/lib/formslib.php');
 
 class block_myremotecourses extends block_base {
 
-    var $idprovider;
-    var $pathtoajax = '/blocks/myremotecourses/ajax.php';
-
     /**
      * block initializations
      */
     public function init() {
-        global $CFG, $DB, $OUTPUT, $USER;
-        
-        $remotehost = (isset($CFG->block_myremotecourses_myremotehost)?$CFG->block_myremotecourses_myremotehost:'');
-        $hostid = (is_mnet_remote_user($USER)?$USER->mnethostid:$remotehost);
-        if (!empty($hostid)){
-            $this->idprovider = $DB->get_record('mnet_host', array('id'=>$hostid), 'id, name, wwwroot');
-            if ($this->idprovider){
-                if (is_mnet_remote_user($USER)){
-                    $url = $this->idprovider->wwwroot;
-                }else{
-                    $url = $CFG->wwwroot.'/auth/mnet/jump.php?hostid='.$this->idprovider->id; 
-                }
-                $this->title = get_string('remotecourses', 'block_myremotecourses', html_writer::link($url,
-                        $this->idprovider->name));
-            }
+        global $CFG;
+
+        if ($CFG->block_myremotecourses_moodlepath){
+            $this->title = get_string('remotecourses', 'block_myremotecourses', html_writer::link($CFG->block_myremotecourses_moodlepath,
+                        ''));
         }else{
             $this->title = get_string('noremotehost', 'block_myremotecourses');
         }
@@ -63,26 +50,15 @@ class block_myremotecourses extends block_base {
      * @return object
      */
     public function get_content() {
-        global $USER, $PAGE, $OUTPUT, $CFG;
+        global $PAGE, $OUTPUT, $CFG;
         if($this->content !== NULL) {
             return $this->content;
         }
 
-        if ($this->idprovider){
+        if ($CFG->block_myremotecourses_moodlepath){
             $PAGE->requires->js('/blocks/myremotecourses/index.js');
-            $PAGE->requires->string_for_js('nocourses', 'block_myremotecourses');
             $PAGE->requires->string_for_js('errormyremotehost', 'block_myremotecourses');
-            if (!empty($CFG->block_myremotecourses_moodlepath)){
-                $this->pathtoajax = $CFG->block_myremotecourses_moodlepath;
-            }
-            $directurl = $this->idprovider->wwwroot.$this->pathtoajax;
-            if (is_mnet_remote_user($USER)){
-                $remoteurl = $directurl;
-            }else{
-                $remoteurl = $CFG->wwwroot.'/auth/mnet/jump.php?hostid='.$this->idprovider->id.'&wantsurl='.$this->pathtoajax;
-            }
-
-            $PAGE->requires->js_init_code('getremotecourses("'.$directurl.'", "'.$remoteurl.'");', true);
+            $PAGE->requires->js_init_code('getremotecourses("'.$CFG->block_myremotecourses_moodlepath.'");', true);
         }
 
         $this->content = new stdClass();
@@ -91,7 +67,7 @@ class block_myremotecourses extends block_base {
 
         $content = array();
 
-        if($this->idprovider){
+        if($CFG->block_myremotecourses_moodlepath){
              $this->content->text .= html_writer::start_tag('div', array('class' => 'categorybox'));
              $this->content->text .= html_writer::start_tag('div', array('id' => 'rcourse-list'));
              $this->content->text .= html_writer::empty_tag('img', array('class'=>'roverview-loading','src'=>$OUTPUT->pix_url('i/ajaxloader'),'style'=>'display: none','alt'=>''));
@@ -118,6 +94,12 @@ class block_myremotecourses extends block_base {
      */
     public function applicable_formats() {
         return array('my-index'=>true);
+    }
+
+    public function html_attributes() {
+        $attributes = parent::html_attributes(); // Get default values
+        $attributes['class'] .= ' remote-hidden'; // Append our class to class attribute
+        return $attributes;
     }
 
 }
