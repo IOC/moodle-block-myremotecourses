@@ -102,4 +102,7 @@ class block_myremotecourses extends block_base {
         return $attributes;
     }
 
+    public function instance_can_be_docked() {
+        return false;
+    }
 }
