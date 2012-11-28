@@ -36,8 +36,8 @@ class block_myremotecourses extends block_base {
     public function init() {
         global $CFG;
 
-        if ($CFG->block_myremotecourses_moodlepath){
-            $this->title = get_string('remotecourses', 'block_myremotecourses', html_writer::link($CFG->block_myremotecourses_moodlepath,
+        if ($CFG->block_myremotecourses_url){
+            $this->title = get_string('remotecourses', 'block_myremotecourses', html_writer::link($CFG->block_myremotecourses_url,
                         ''));
         }else{
             $this->title = get_string('noremotehost', 'block_myremotecourses');
@@ -55,10 +55,10 @@ class block_myremotecourses extends block_base {
             return $this->content;
         }
 
-        if ($CFG->block_myremotecourses_moodlepath){
+        if ($CFG->block_myremotecourses_url){
             $PAGE->requires->js('/blocks/myremotecourses/index.js');
             $PAGE->requires->string_for_js('errormyremotehost', 'block_myremotecourses');
-            $PAGE->requires->js_init_code('getremotecourses("'.$CFG->block_myremotecourses_moodlepath.'");', true);
+            $PAGE->requires->js_init_code('getremotecourses("'.$CFG->block_myremotecourses_url.'");', true);
         }
 
         $this->content = new stdClass();
@@ -67,7 +67,7 @@ class block_myremotecourses extends block_base {
 
         $content = array();
 
-        if($CFG->block_myremotecourses_moodlepath){
+        if($CFG->block_myremotecourses_url){
              $this->content->text .= html_writer::start_tag('div', array('class' => 'categorybox'));
              $this->content->text .= html_writer::start_tag('div', array('id' => 'rcourse-list'));
              $this->content->text .= html_writer::empty_tag('img', array('class'=>'roverview-loading','src'=>$OUTPUT->pix_url('i/ajaxloader'),'style'=>'display: none','alt'=>''));
