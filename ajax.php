@@ -109,7 +109,6 @@ function print_ioc_overview($courses) {
     return $outhtml;
 }
 
-$callback = optional_param('callback', '', PARAM_TEXT);
 $content = '';
 $sitetitle = '';
 $siteurl = '';
@@ -131,14 +130,8 @@ if (!empty($USER->id)) {
     $siteurl = $CFG->wwwroot;
 }
 
-if (!empty($callback)) {
-    echo $callback.'(';
-}
 echo json_encode(array(
     'html' => $content,
     'title' => $sitetitle,
     'url' => $siteurl
 ));
-if (!empty($callback)) {
-    echo ');';
-}
