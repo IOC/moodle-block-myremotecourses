@@ -20,12 +20,13 @@
  * My remote courses block
  *
  *
- * @package   blocks
- * @author    Marc Català <mcatala@ioc.cat>
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package    blocks
+ * @subpackage myremotecourses
+ * @author     Marc Català <reskit@gmail.com>
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-require_once($CFG->dirroot.'/lib/weblib.php');
+require_once($CFG->dirroot . '/lib/weblib.php');
 require_once($CFG->dirroot . '/lib/formslib.php');
 
 class block_myremotecourses extends block_base {
@@ -93,7 +94,7 @@ class block_myremotecourses extends block_base {
      * @return array
      */
     public function applicable_formats() {
-        return array('my-index'=>true);
+        return array('my-index' => true);
     }
 
     public function html_attributes() {
@@ -106,3 +107,4 @@ class block_myremotecourses extends block_base {
         return false;
     }
 }
+

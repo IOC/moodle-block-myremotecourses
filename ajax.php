@@ -16,7 +16,7 @@
 //  You should have received a copy of the GNU General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-require_once(dirname(dirname(dirname(__FILE__))).'/config.php');
+require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->dirroot . '/course/lib.php');
 
 require_login(null, false);
@@ -135,3 +135,4 @@ echo json_encode(array(
     'title' => $sitetitle,
     'url' => $siteurl
 ));
+

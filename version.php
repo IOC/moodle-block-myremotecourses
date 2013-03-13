@@ -20,12 +20,13 @@
  *
  * @package    block
  * @subpackage myremotecourses
- * @copyright  Marc Català <mcatala@ioc.cat>
+ * @copyright  Marc Català <reskit@gmail.com>
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2012061400;
+$plugin->version   = 2013031300;
 $plugin->requires  = 2011112900;
 $plugin->component = 'block_myremotecourses';
+
