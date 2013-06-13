@@ -18,6 +18,7 @@
 
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->dirroot . '/course/lib.php');
+require_once($CFG->libdir . '/coursecatlib.php');
 
 require_login(null, false);
 
@@ -50,17 +51,16 @@ function print_ioc_overview($courses) {
             }
         }
     }
-    $cat_names = array();
-    $cat_parents = array();
-    make_categories_list($cat_names, $cat_parents);
+
+    $cat_names = coursecat::make_categories_list();
     $cat_courses = array();
     foreach ($courses as $course) {
         $parent = $course->category;
-        while (!empty($cat_parents[$parent])) {
-            $parent = $cat_parents[$parent][0];
+        while ($aux = coursecat::get($parent)->get_parents()) {
+            $parent = $aux[0];
         }
         $cat_courses[$parent][$course->id] = $course;
-    };
+    }
 
     foreach ($cat_courses as $category => $courses) {
         $outhtml .= html_writer::start_tag('div', array('class' => 'categorybox'));
