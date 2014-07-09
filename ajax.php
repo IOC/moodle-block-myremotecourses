@@ -28,7 +28,7 @@ function print_ioc_overview($courses) {
     global $CFG, $DB, $OUTPUT, $PAGE, $USER;
 
     $PAGE = new moodle_page();
-    $context = get_context_instance(CONTEXT_SYSTEM);
+    $context = context_system::instance();
     $PAGE->set_context($context);
 
     $visible_courses = array();
@@ -68,8 +68,9 @@ function print_ioc_overview($courses) {
         $outhtml .= $cat_names[$category];
         $outhtml .= html_writer::end_tag('h3');
         foreach ($courses as $course) {
-            $PAGE->set_context(get_context_instance(CONTEXT_COURSE, $course->id));
-            $fullname = format_string($course->fullname, true, array('context' => get_context_instance(CONTEXT_COURSE, $course->id)));
+            $context = context_course::instance($course->id);
+            $PAGE->set_context($context);
+            $fullname = format_string($course->fullname, true, array('context' => $context));
             $attributes = array('title' => s($fullname));
             if (empty($course->visible)) {
                 $attributes['class'] = 'dimmed';
