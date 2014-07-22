@@ -115,7 +115,7 @@ $sitetitle = '';
 $siteurl = '';
 
 if (!empty($USER->id)) {
-    $courses = enrol_get_my_courses('modinfo, sectioncache');
+    $courses = enrol_get_my_courses();
     foreach ($courses as $c) {
         if (isset($USER->lastcourseaccess[$c->id])) {
             $courses[$c->id]->lastaccess = $USER->lastcourseaccess[$c->id];
